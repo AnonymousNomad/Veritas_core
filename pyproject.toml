@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vitalis-cybercore"
+version = "0.1.0"
+description = "Sovereign, offline-first cyber-threat classification engine."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "GPL-3.0"}
+authors = [{name = "Neuro_Nomad"}]
+keywords = ["synthetic-intelligence", "cybersecurity", "sovereign-ai"]

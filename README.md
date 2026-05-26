@@ -4,79 +4,98 @@ language:
 - en
 tags:
 - synthetic-intelligence
+- cybersecurity
 - sovereign-ai
 - open-source
-- framework
 ---
 
-# Vitalis Core
+# FSI Vitalis CyberCore
 ### Ferrell Synthetic Intelligence (FSI)
 **Built by Neuro_Nomad**
-⚠️ UNDER ACTIVE DEVELOPMENT — This is my first public project.
-Feedback, improvements and collaboration genuinely welcome.
-Community tab is open.
 
 ---
 
-## Who I Am
-Self-taught developer. No degree. No corporate backing. No team.
-I believe sovereign intelligence belongs to the people, not corporations.
-FSI exists to give that back.
+## The FSI Manifesto: Sovereignty Through Synthetic Logic
+
+The era of monitored, centralized digital existence is changing.
+The future of synthetic intelligence belongs to the individuals
+who build, own and defend their own cognitive infrastructure.
+
+**I. The Mandate of Sovereignty**
+True intelligence thrives without surveillance. Any system requiring
+persistent corporate connectivity compromises your autonomy. FSI exists
+to facilitate the reclamation of intellectual ownership. We build for
+the architect, the operator and the independent developer.
+We don't provide a service. We provide a foundation.
+
+**II. Architecture as Ethics**
+Our code reflects our values. By prioritizing minimal dependencies
+and local performance, we ensure your cognitive chain remains unbroken
+by third-party intervention. To build with FSI is to commit to
+technical integrity.
+
+**III. The Frontier of Synthetic Logic**
+We are architects of human-machine symbiosis built on transparency
+and ownership. We believe safety and sovereignty are not opposites.
+A truly sovereign system is also a responsible one. FSI is the
+structural answer to a world that concentrates too much intelligence
+in too few hands.
+
+**IV. The Operational Vow**
+We build because we believe developers deserve better.
+We build because privacy is a right.
+We build because the tools you use should belong to you.
 
 ---
 
-## What Vitalis Core Is
-This is not a wrapper. Not an API. Not another ChatGPT clone.
-This is an original synthetic intelligence framework designed and 
-built from the ground up by one developer.
-
-Not artificial intelligence. Synthetic intelligence.
-The architecture, the design, the philosophy — all original.
-
-A blank slate. You train it. You shape it. You own it completely.
-Runs locally on your device. No cloud. No tracking. No corporate control.
+## What This Is
+A demonstration fork of Vitalis Core showing what the base model
+becomes when directed toward a specific domain.
+This is not a finished product. It is not a tool.
+It is proof of concept — showing developers what they can build.
 
 ---
 
-## What Works Right Now
-- Boot loop and core engine operational
-- Five tier system — kids, basic, enthusiast, professional, school
-- Adaptive environment per tier
-- Sovereign shield integrity protection
-- Mesh network node foundation
-- Memory and cognition architecture
-- Kernel-level signal processing
-
-Clone it. Run it. Build on it today.
+## What It Does
+- Classifies input as threats, defensive actions, queries or signals
+- Assigns severity — HIGH, MEDIUM, LOW
+- Assigns confidence scores to every classification
+- Logs everything to an immutable JSON-Lines audit trail
+- Config-driven — edit keywords without touching code
 
 ---
 
-## How To Run It
-git clone https://huggingface.co/FerrellSyntheticIntelligence/Vitalis_Core
-cd Vitalis_Core
+## Benchmark Results
+- malware detected → THREAT_DETECTED [HIGH] — Confidence: 0.9
+- monitor the network → DEFENSIVE_ACTION — Confidence: 0.6
+- what is a port scan → THREAT_DETECTED [LOW] — Confidence: 0.7
+- unauthorized access → THREAT_DETECTED [MEDIUM] — Confidence: 0.85
+- harden the firewall → DEFENSIVE_ACTION — Confidence: 0.6
+
+Tests: All passing.
+
+---
+
+## Run It
 python3 fsi_main.py
 
----
-
-## What's In Development
-A companion Android app is being built where users can train and customize
-their Vitalis instance without writing code. Community collaboration tools
-and template system coming with the app.
+## Run Tests
+python3 tests/test_brain.py
 
 ---
 
-## FSI Pipeline
-Two additional private projects under FSI are in development and will
-not be open source.
+## Base Model
+Built on Vitalis Core — FSI open source sovereign intelligence framework.
+huggingface.co/FerrellSyntheticIntelligence/Vitalis_Core
 
-Project Lorein — Classification: Private.
+---
 
-Project Jedi Order — Joint Entity Defense Infrastructure.
-Sovereign cybersecurity defense system. Seeking 5 founding partners
-for private beta. Serious developers and cybersecurity professionals only.
-Contact via Community tab.
+## Who Built This
+Self-taught developer. No degree. No corporate backing. No team.
+One person. One tablet. One mission.
+Sovereign intelligence belongs to the people.
 
 ---
 
 ## License
-GPL-3.0 — Credit the original. What's built on this stays open. Always.
+GPL-3.0
