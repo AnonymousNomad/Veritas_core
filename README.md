@@ -19,13 +19,20 @@ Veritas_Core
 
 ​Clone the repository and initialize the framework:
 git clone https://github.com/AnonymousNomad/Veritas_core
+
 cd Veritas_core
+
 python3 fsi_main.py
 
+
 Roadmap & Development
+
 ​Core Stability: Ongoing optimization of the heartbeat_engine and telemetry_bridge.
 ​Interface Layer: Development of a mobile-native companion application for instance training and configuration.
+
 ​Security: Continuous hardening of the kernel_interface to support high-assurance defense protocols.
+
 ​Contribution & Licensing
+
 ​Veritas_Core is licensed under GPL-3.0.
 ​I welcome professional contributions that enhance the stability, security, or performance of the framework. Please review our CONTRIBUTING.md before submitting pull requests
