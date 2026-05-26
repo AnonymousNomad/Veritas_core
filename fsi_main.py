@@ -1,6 +1,8 @@
 import threading
 import time
 from core.vitalis_engine import VitalisEngine
+from core.brain import VitalisBrain
+from core.talker import VitalisTalker
 from core.handshake_module import identify_user_tier
 from core.environment_manager import provision_environment
 from core.mesh_network import broadcast_node_presence
@@ -44,8 +46,16 @@ def main():
     broadcast_node_presence("Neuro_Nomad_Node", role)
     print(monitor_integrity("Status_Check"))
     print("--- System Fully Integrated ---")
+    brain = VitalisBrain()
+    talker = VitalisTalker(role)
+    print("Vitalis is ready. Type 'exit' to quit.")
     while True:
-        time.sleep(1.0)
+        user_input = input("You: ")
+        if user_input.lower() == "exit":
+            print("Vitalis: Shutting down.")
+            break
+        response = brain.process(user_input)
+        talker.speak(response)
 
 if __name__ == "__main__":
     main()
