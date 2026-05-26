@@ -1,42 +1,57 @@
-#synthetic-intelligence
-#sovereign-ai,
-#gpl-3.0
+---
+license: gpl-3.0
+tags:
+- synthetic-intelligence
+- sovereign-ai
+- open-source
+---
 
-Veritas_Core
+# Vitalis_Core
+### Ferrell Synthetic Intelligence (FSI)
+**Built by Neuro_Nomad**
 
-​Veritas_Core is a high-performance, sovereign synthetic intelligence framework engineered for local, air-gapped deployment. Designed for modularity and kernel-level integration, it provides the fundamental cognitive and sensory infrastructure required for autonomous synthetic entities.
-​Technical Architecture
+Vitalis_Core is a sovereign synthetic intelligence framework engineered
+for local, air-gapped deployment. Designed for modularity and
+kernel-level integration, it provides the fundamental cognitive and
+sensory infrastructure for autonomous synthetic entities.
 
-​Veritas_Core operates as a standalone chassis, decoupling cognitive processing from cloud-dependent APIs.
+---
 
-​Core Engine: Native Python 3.14+ implementation; zero external dependencies required for base functionality.
+## Technical Architecture
 
-​Kernel Integration: Direct netlink and procfs interfacing for low-latency signal processing.
-​Sovereign Shield: Hardened integrity protection layer for memory management and inter-process communication.
+Vitalis_Core operates as a standalone framework decoupled from
+cloud-dependent APIs.
 
-​Cognitive Framework: Hierarchical memory and action engine designed for multi-tier adaptive environments.
-​System Requirements
-​OS: Linux (Targeted: Debian-based, Kernel 6.1+)
-​Interpreter: Python 3.14 or higher
-​Memory: Optimized for resource-constrained ARM64/x86 environments.
-​Installation
+- Core Engine: Python 3.11+ implementation, minimal external dependencies
+- Kernel Integration: Direct netlink and procfs interfacing
+- Sovereign Shield: Integrity protection layer for memory management
+- Cognitive Framework: Hierarchical memory and action engine
+- Adaptive Tiers: kids, basic, enthusiast, professional, school
 
-​Clone the repository and initialize the framework:
-git clone https://github.com/AnonymousNomad/Veritas_core
+---
 
-cd Veritas_core
+## System Requirements
+- OS: Linux (Debian-based, Kernel 6.1+)
+- Python: 3.11 or higher
+- Memory: Optimized for ARM64/x86 environments
 
+---
+
+## Installation
+
+git clone https://github.com/AnonymousNomad/Vitalis_core
+cd Vitalis_core
 python3 fsi_main.py
 
+---
 
-Roadmap & Development
+## Roadmap
+- Core stability and heartbeat engine optimization
+- Mobile companion app for training and configuration
+- Kernel interface hardening for defense protocols
 
-​Core Stability: Ongoing optimization of the heartbeat_engine and telemetry_bridge.
-​Interface Layer: Development of a mobile-native companion application for instance training and configuration.
+---
 
-​Security: Continuous hardening of the kernel_interface to support high-assurance defense protocols.
-
-​Contribution & Licensing
-
-​Veritas_Core is licensed under GPL-3.0.
-​I welcome professional contributions that enhance the stability, security, or performance of the framework. Please review our CONTRIBUTING.md before submitting pull requests
+## License
+GPL-3.0 — Contributions welcome. See CONTRIBUTING.md.
+EOF
