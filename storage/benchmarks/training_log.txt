@@ -1,0 +1,8 @@
+
+Module: module_01
+  how do you work -> QUERY_DETECTED: how do you work | PASS
+  what are you -> QUERY_DETECTED: what are you | PASS
+  train me on this -> TRAINING_SIGNAL: train me on this | PASS
+  learn from this data -> TRAINING_SIGNAL: learn from this data | PASS
+  hello -> INPUT_RECEIVED: hello | PASS
+  build something new -> INPUT_RECEIVED: build something new | PASS
