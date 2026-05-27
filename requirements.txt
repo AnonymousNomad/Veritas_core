@@ -1,0 +1,6 @@
+numpy
+pyyaml
+click
+faiss-cpu
+sentence-transformers
+huggingface_hub

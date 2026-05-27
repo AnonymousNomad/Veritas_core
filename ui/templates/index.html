@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vitalis Core — FSI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#00ff88;font-family:'Courier New',monospace;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{padding:6px 16px;border-bottom:1px solid #00ff8833;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:11px;letter-spacing:4px}
+.hb-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff3333;margin-right:6px;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 6px #ff3333}50%{opacity:.3;box-shadow:none}}
+.wrap{display:flex;flex:1;overflow:hidden}
+.left{width:190px;border-right:1px solid #00ff8822;padding:10px;overflow-y:auto;background:#030303}
+.left h3{font-size:9px;letter-spacing:3px;color:#00ff8855;margin-bottom:10px;border-bottom:1px solid #00ff8822;padding-bottom:6px}
+.tmpl{display:block;width:100%;background:transparent;color:#00ff8899;border:none;border-left:2px solid transparent;padding:7px 8px;margin-bottom:2px;cursor:pointer;font-size:10px;text-align:left;letter-spacing:1px;transition:all 0.15s;font-family:'Courier New',monospace}
+.tmpl:hover,.tmpl.active{color:#00ff88;border-left-color:#00ff88;background:#00ff8808}
+.center{flex:1;display:flex;flex-direction:column;padding:12px;background:#000}
+.hb-wrap{height:70px;position:relative;margin-bottom:12px}
+canvas#hb{width:100%;height:100%}
+.hb-label{position:absolute;top:4px;left:0;font-size:9px;letter-spacing:2px;color:#ff333366}
+#status-bar{font-size:9px;letter-spacing:2px;color:#00ff8844;margin-bottom:10px;text-align:center}
+#chat{flex:1;overflow-y:auto;padding:6px;margin-bottom:10px;border:1px solid #00ff8815;background:#020202}
+#chat p{font-size:11px;margin-bottom:5px;line-height:1.5;border-bottom:1px solid #00ff8808;padding-bottom:4px}
+.row{display:flex;gap:6px}
+#inp{flex:1;background:#050505;color:#00ff88;border:1px solid #00ff8833;padding:9px;font-family:'Courier New',monospace;font-size:11px;outline:none;letter-spacing:1px}
+#inp:focus{border-color:#00ff88;box-shadow:0 0 8px #00ff8822}
+#btn{background:transparent;color:#00ff88;border:1px solid #00ff88;padding:9px 18px;cursor:pointer;font-family:'Courier New',monospace;letter-spacing:2px;font-size:10px;transition:all 0.15s}
+#btn:hover{background:#00ff8815;box-shadow:0 0 10px #00ff8833}
+.right{width:175px;border-left:1px solid #00ff8822;padding:10px;background:#030303}
+.right h3{font-size:9px;letter-spacing:3px;color:#00ff8855;margin-bottom:10px;border-bottom:1px solid #00ff8822;padding-bottom:6px}
+select{width:100%;background:#050505;color:#00ff88;border:1px solid #00ff8833;padding:7px;font-family:'Courier New',monospace;font-size:10px;margin-bottom:12px;outline:none}
+.stat{font-size:9px;color:#00ff8855;margin-bottom:5px;letter-spacing:1px;display:flex;justify-content:space-between}
+.stat span{color:#00ff88}
+.divider{border:none;border-top:1px solid #00ff8815;margin:10px 0}
+.training-status{font-size:9px;color:#ffaa00;margin-top:8px;letter-spacing:1px;min-height:16px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">VITALIS CORE — FERRELL SYNTHETIC INTELLIGENCE</div>
+<div><span class="hb-dot"></span><span style="font-size:9px;letter-spacing:2px;color:#ff333399">HEARTBEAT ONLINE</span></div>
+</header>
+<div class="wrap">
+<div class="left">
+<h3>TEMPLATES</h3>
+<button class="tmpl" onclick="loadTmpl(this,'cybersecurity')">⬡ CYBERSECURITY</button>
+<button class="tmpl" onclick="loadTmpl(this,'assistant')">⬡ ASSISTANT</button>
+<button class="tmpl" onclick="loadTmpl(this,'research')">⬡ RESEARCH</button>
+<button class="tmpl" onclick="loadTmpl(this,'creative')">⬡ CREATIVE</button>
+<button class="tmpl" onclick="loadTmpl(this,'education')">⬡ EDUCATION</button>
+<button class="tmpl" onclick="loadTmpl(this,'developer')">⬡ DEVELOPER</button>
+<button class="tmpl" onclick="loadTmpl(this,'medical')">⬡ MEDICAL</button>
+<button class="tmpl" onclick="loadTmpl(this,'legal')">⬡ LEGAL</button>
+<button class="tmpl" onclick="loadTmpl(this,'finance')">⬡ FINANCE</button>
+<button class="tmpl" onclick="loadTmpl(this,'gaming')">⬡ GAMING</button>
+</div>
+<div class="center">
+<div class="hb-wrap">
+<span class="hb-label">NEURAL PULSE</span>
+<canvas id="hb"></canvas>
+</div>
+<div id="status-bar">— SYSTEM NOMINAL | AWAITING INPUT —</div>
+<div id="chat"></div>
+<div class="row">
+<input type="text" id="inp" placeholder="INPUT TO VITALIS..." onkeydown="if(event.key==='Enter')send()">
+<button id="btn" onclick="send()">TRANSMIT</button>
+</div>
+</div>
+<div class="right">
+<h3>SYSTEM</h3>
+<select id="tier" onchange="updateTier()">
+<option value="kids">KIDS</option>
+<option value="basic">BASIC</option>
+<option value="enthusiast">ENTHUSIAST</option>
+<option value="professional" selected>PROFESSIONAL</option>
+<option value="school">SCHOOL</option>
+</select>
+<div class="stat">TIER <span id="s-tier">PROFESSIONAL</span></div>
+<div class="stat">CYCLE <span id="s-cycle">0</span></div>
+<div class="stat">STATE <span id="s-state">AWARE</span></div>
+<div class="stat">MEMORY <span id="s-mem">ACTIVE</span></div>
+<div class="stat">SHIELD <span id="s-shield">NOMINAL</span></div>
+<hr class="divider">
+<div class="stat">TEMPLATE <span id="s-tmpl">NONE</span></div>
+<div class="training-status" id="s-training"></div>
+</div>
+</div>
+<script>
+const cv=document.getElementById('hb');
+const cx=cv.getContext('2d');
+cv.width=cv.offsetWidth*2;cv.height=cv.offsetHeight*2;
+cx.scale(2,2);
+let pts=[],fr=0,stress=0;
+function drawHB(){
+cx.clearRect(0,0,cv.width,cv.height);
+const w=cv.width/2,h=cv.offsetHeight;
+const mid=h/2;
+let v=0;
+const pos=fr%120;
+if(pos===0){v=0}
+else if(pos===5){v=-8}
+else if(pos===10){v=30+stress}
+else if(pos===15){v=-15}
+else if(pos===20){v=5}
+else if(pos===25){v=0}
+pts.push(mid+v);
+if(pts.length>w)pts.shift();
+cx.strokeStyle='#ff3333';cx.lineWidth=1.2;
+cx.shadowColor='#ff3333';cx.shadowBlur=4;
+cx.beginPath();
+pts.forEach((p,i)=>{i===0?cx.moveTo(i,p):cx.lineTo(i,p)});
+cx.stroke();fr++;requestAnimationFrame(drawHB);}
+drawHB();
+function updateTier(){document.getElementById('s-tier').innerText=document.getElementById('tier').value.toUpperCase();}
+async function send(){
+const input=document.getElementById('inp').value.trim();
+if(!input)return;
+const tier=document.getElementById('tier').value;
+document.getElementById('inp').value='';
+stress=15;setTimeout(()=>stress=0,2000);
+addMsg('YOU',input,'#00ff44');
+const r=await fetch('/process',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tier,input})});
+const d=await r.json();
+document.getElementById('s-cycle').innerText=d.cycle||0;
+document.getElementById('s-state').innerText=(d.state||'aware').toUpperCase();
+document.getElementById('status-bar').innerText='— '+d.response+' —';
+addMsg('VITALIS',d.response,'#00ff88');}
+function addMsg(s,m,c){
+const ch=document.getElementById('chat');
+const t=new Date().toLocaleTimeString();
+ch.innerHTML+='<p><span style="color:'+c+'">['+s+']</span> <span style="color:#00ff8833;font-size:9px">'+t+'</span> '+m+'</p>';
+ch.scrollTop=ch.scrollHeight;}
+async function loadTmpl(el,name){
+document.querySelectorAll('.tmpl').forEach(b=>b.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('s-tmpl').innerText=name.toUpperCase();
+document.getElementById('s-training').innerText='LOADING '+name.toUpperCase()+'...';
+stress=25;
+const r=await fetch('/template',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+const d=await r.json();
+document.getElementById('s-state').innerText=d.mode.toUpperCase();
+document.getElementById('s-training').innerText='TEMPLATE ACTIVE: '+name.toUpperCase();
+addMsg('SYSTEM','Template initialized: '+name.toUpperCase()+' | Mode: '+d.mode,'#ffaa00');
+setTimeout(()=>stress=0,3000);}
+</script>
+</body>
+</html>

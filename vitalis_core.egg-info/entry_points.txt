@@ -1,0 +1,2 @@
+[console_scripts]
+vitalis-fsi = run_vitalis:main
