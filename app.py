@@ -1,21 +1,30 @@
 import gradio as gr
+from core.brain import VitalisBrain
 
-def train_engine():
-    return "Training initiated..."
+# Instantiate the brain for the UI
+brain = VitalisBrain()
 
-def deploy_engine():
-    return "Engine deployed to production."
+def trigger_train():
+    # Attempt to call the training method
+    if hasattr(brain, 'train_mode'):
+        return brain.train_mode()
+    return "Error: train_mode method not defined in VitalisBrain."
+
+def trigger_deploy():
+    # Attempt to call the deployment method
+    if hasattr(brain, 'deploy_mode'):
+        return brain.deploy_mode()
+    return "Error: deploy_mode method not defined in VitalisBrain."
 
 with gr.Blocks() as demo:
-    gr.Markdown("# Vitalis Core Engine")
+    gr.Markdown("# Vitalis Core | Command Center")
     with gr.Row():
-        btn_download = gr.Button("Download Model")
         btn_train = gr.Button("Train Engine")
         btn_deploy = gr.Button("Deploy")
-    
     output = gr.Textbox(label="Status")
     
-    btn_train.click(train_engine, outputs=output)
-    btn_deploy.click(deploy_engine, outputs=output)
+    btn_train.click(trigger_train, outputs=output)
+    btn_deploy.click(trigger_deploy, outputs=output)
 
-demo.launch()
+if __name__ == "__main__":
+    demo.launch()

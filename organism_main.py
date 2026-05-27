@@ -2,6 +2,7 @@ import sys
 import os
 from core.ledger import VitalisLedger
 from core.brain import VitalisBrain
+from extensions.dreamer import Dreamer
 
 def main():
     print("[SYSTEM] Vitalis Core Booting...")
@@ -19,6 +20,11 @@ def main():
     # Initialize Core
     brain = VitalisBrain()
     print("[SYSTEM] Cognitive Core Synchronized.")
+    
+    # Initialize Dreamer Extension
+    dreamer = Dreamer(brain=brain)
+    dreamer.start()
+    print("[SYSTEM] Dreamer Extension Active.")
     
     try:
         while True:
