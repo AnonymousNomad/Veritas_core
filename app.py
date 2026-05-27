@@ -1,20 +1,21 @@
 import gradio as gr
-from src.core.memory_engine import MemoryEngine
 
-# Initialize the Sovereign Brain
-brain = MemoryEngine()
-brain.ingest_knowledge('storage/knowledge')
+def train_engine():
+    return "Training initiated..."
 
-def vitalis_chat(user_message, history):
-    # Retrieve relevant protocol from local vector store
-    response = brain.query(user_message)
-    return f"[VITALIS_CORE_UI]: {response}"
+def deploy_engine():
+    return "Engine deployed to production."
 
-demo = gr.ChatInterface(
-    fn=vitalis_chat,
-    title="Vitalis Synthetic Intelligence | Sovereign Core",
-    theme="soft"
-)
+with gr.Blocks() as demo:
+    gr.Markdown("# Vitalis Core Engine")
+    with gr.Row():
+        btn_download = gr.Button("Download Model")
+        btn_train = gr.Button("Train Engine")
+        btn_deploy = gr.Button("Deploy")
+    
+    output = gr.Textbox(label="Status")
+    
+    btn_train.click(train_engine, outputs=output)
+    btn_deploy.click(deploy_engine, outputs=output)
 
-if __name__ == "__main__":
-    demo.launch()
+demo.launch()
