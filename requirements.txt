@@ -1,6 +1,4 @@
-numpy
-pyyaml
-click
-faiss-cpu
+gradio==4.26.0
 sentence-transformers
-huggingface_hub
+faiss-cpu
+numpy
