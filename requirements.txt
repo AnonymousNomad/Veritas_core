@@ -1,6 +1,7 @@
-gradio>=4.26.0
+gradio[oauth,mcp]==6.15.1
 huggingface_hub
 pandas
 numpy
 pydantic
 uvicorn
+spaces
