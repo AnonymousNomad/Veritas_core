@@ -7,7 +7,7 @@ sdk: gradio
 sdk_version: 6.15.1
 app_file: app.py
 pinned: false
-license: apache-2.0
+license: gpl-3.0
 ---
 
 ───
@@ -896,5 +896,3 @@ NSE‑2.0 (“Neural Hive”) will introduce:
 Chapter 20 – Conclusion & The FSI Vision
 
 The Neuro‑Synth Engine is the culmination of sovereign engineering: a transparent, locally‑executable, self‑adapting AI that returns ownership of intelligence to the individual. It demonstrates that high‑performance synthetic cognition need not be a black‑box service, but an architect’s instrument for a future where autonomy and responsibility coexist.
-
-
