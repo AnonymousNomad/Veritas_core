@@ -12,6 +12,59 @@ license: apache-2.0
 
 ───
 
+FSI Sovereign Continual-Learning Core (Vitalis_Core)
+
+An autonomous, localized cognitive substrate engineered for high-dimensional semantic ingestion, localized tensor math retrieval, and real-time thermodynamic free-energy visualization. Operating with absolute data isolation, this system requires zero external network dependencies and performs all vector operations natively on local compute (optimized for ARM64/CPU containment layers).
+
+🛠️ System Architecture Topology
+
+The framework operates as an interconnected, low-overhead closed loop:
+
+1. Ingestion Layer (memory_engine.py) : Parses raw text telemetry blocks within the secure workspace and converts data into semantic arrays via a local transformer backbone.
+
+
+2. Persistence Matrix (vectors_cache.pt) : Securely serializes high-dimensional tensor stacks directly to local disk structures.
+
+3. Retrieval Engine (retrieval_engine.py) : Executes exact cosine similarity math across stacked tensor arrays natively to enforce strict data isolation.
+
+4. Automation Daemon (watcher.py) : A standard-library background process monitoring the workspace for data mutations, triggering zero-downtime hot-ingestion via local API loopbacks.
+
+5. Visual Interface (app.py & ripple.html) : Maps logical confidence matrices and thermodynamic free-energy loss equations into a live HTML5 Canvas water-ripple visualization.
+
+🚀 Deployment Instructions
+
+1. Environment Initialization
+
+Ensure your local virtual containment layer is active and dependencies are registered:
+
+python3 -m venv venv
+source venv/bin/activate
+pip install torch sentence-transformers flask
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Ferrell Synthetic Intelligence (FSI) – White Paper
 Documentation ID: FSI‑NSE‑V1  Classification: Proprietary Engineering Manifesto  Author: Ferrell Synthetic Intelligence
 
