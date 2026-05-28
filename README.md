@@ -38,7 +38,9 @@ The framework operates as an interconnected, low-overhead closed loop:
 Ensure your local virtual containment layer is active and dependencies are registered:
 
 python3 -m venv venv
+
 source venv/bin/activate
+
 pip install torch sentence-transformers flask
 
 
