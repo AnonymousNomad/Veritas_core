@@ -1,16 +1,12 @@
-import sys
 import subprocess
+import sys
 
-# 1. Force installation before any imports occur
-try:
-    import faiss
-except ImportError:
-    print("Installing faiss-cpu...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "faiss-cpu"])
-    import faiss
+print("Ensuring dependencies...")
+subprocess.check_call([sys.executable, "-m", "pip", "install", "faiss-cpu"])
 
-# 2. Now it is safe to import your engine
+# Now import the class
 from src.core.memory_engine import MemoryEngine
 
 if __name__ == "__main__":
+    engine = MemoryEngine()
     print("Engine initialized successfully.")
