@@ -7,3 +7,4 @@ sentence-transformers
 >>>>>>> Stashed changes
 numpy
 transformers
+faiss-cpu
