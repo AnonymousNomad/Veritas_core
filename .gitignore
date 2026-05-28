@@ -1,20 +1,7 @@
-<<<<<<< HEAD
-.venv/
+venv/
 __pycache__/
-vitalis/src/**/__pycache__/
-*.pyc
-*.log
+.pytest_cache/
 *.tar.gz
-*.json
-*.csv
-storage/
-=======
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-vitalis_shadow
-memory_store.json
-vitalis_memory.csv
-memory_stream.jsonl
->>>>>>> c3ceffd7c7253d3cb91ddea5998e5dc497615daa
+*.bak
+*.log
+storage/knowledge/
