@@ -70,14 +70,6 @@ pip install torch sentence-transformers flask
 Ferrell Synthetic Intelligence (FSI) – White Paper
 Documentation ID: FSI‑NSE‑V1  Classification: Proprietary Engineering Manifesto  Author: Ferrell Synthetic Intelligence
 
-bash
-
-python3 -m venv venv
-
-source venv/bin/activate
-
-pip install torch sentence-transformers flask
-
 ───
 
 Table of Contents
