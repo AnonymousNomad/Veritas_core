@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FSI – Ripple Thought Visualiser</title>
+  <style>
+    body { margin:0; background:#0e0e0e; color:#fff; font-family:monospace; overflow: hidden; }
+    #canvas { display:block; width:100vw; height:100vh; position: absolute; top:0; left:0; z-index: 1; }
+    #controls { position:absolute; top:20px; left:20px; z-index:10; background: rgba(20, 20, 20, 0.85); padding: 15px; border: 1px solid #333; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    #question { width:350px; padding:10px; background: #000; border: 1px solid #555; color: #00ffcc; font-family: monospace; outline: none; }
+    #question:focus { border-color: #00ffcc; }
+    #run { padding:10px 20px; background: #00ffcc; border: none; color: #000; font-weight: bold; cursor: pointer; font-family: monospace; }
+    #run:hover { background: #00ccaa; }
+    #metrics { margin-top: 10px; font-size: 12px; color: #aaa; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <div style="font-weight: bold; margin-bottom: 8px; color: #00ffcc;">FSI COGNITIVE MATRIX SURROUND</div>
+    <input id="question" placeholder="Input operational query matrix..." value="PROTOCOL_SYN_FLOOD mitigation parameters" />
+    <button id="run">Execute</button>
+    <div id="metrics"></div>
+  </div>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    
+    function resize() {
+      canvas.width  = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Ripple {
+      constructor(x, y, radius, speed, opacity, color, lineWidth) {
+        this.x = x; this.y = y;
+        this.radius = radius;      
+        this.speed = speed;        
+        this.opacity = opacity;    
+        this.color = color;        
+        this.lineWidth = lineWidth;
+      }
+      update() {
+        this.radius += this.speed;
+        this.opacity *= 0.97;      // Smooth linear decay tracking
+      }
+      draw(ctx) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.strokeStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.lineWidth = this.lineWidth;
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+      }
+      isDead() { return this.opacity < 0.01; }
+    }
+
+    const ripples = [];
+
+    function mapStepToRipple(step, index, totalSteps) {
+      const margin = 100;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      
+      // Horizontal node dispersion mapping across center plane
+      const x = margin + ((width - margin * 2) / Math.max(1, totalSteps - 1)) * index;
+      const y = height / 2;
+
+      // Mathematical Scaling: High free-energy produces wide, high-velocity disruptions
+      const baseEnergy = parseFloat(step.free_energy || 0.05);
+      const radius = 2;
+      const speed = 1.5 + (baseEnergy * 25); 
+      const opacity = 1.0;
+      
+      // Chromatic confidence vectoring: Green-cyan for stability, Red-orange for high entropy deviations
+      let color = "rgb(0, 255, 204)"; 
+      if (step.confidence < 0.6) {
+        color = "rgb(255, 51, 51)";
+      } else if (step.confidence < 0.85) {
+        color = "rgb(255, 153, 0)";
+      }
+
+      const lineWidth = Math.max(1, Math.min(5, baseEnergy * 50));
+      return new Ripple(x, y, radius, speed, opacity, color, lineWidth);
+    }
+
+    function animationLoop() {
+      // Clear canvas with trace retention buffer to generate water movement trails
+      ctx.fillStyle = 'rgba(14, 14, 14, 0.2)';
+      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        ripples[i].update();
+        ripples[i].draw(ctx);
+        if (ripples[i].isDead()) {
+          ripples.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(animationLoop);
+    }
+    requestAnimationFrame(animationLoop);
+
+    document.getElementById('run').addEventListener('click', async () => {
+      const text = document.getElementById('question').value;
+      const metricsDiv = document.getElementById('metrics');
+      metricsDiv.innerHTML = "Query dispatched to local core pipeline...";
+      
+      try {
+        const response = await fetch('/ripple', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: text })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+          metricsDiv.innerHTML = `<span style="color:red;">Error: ${data.error}</span>`;
+          return;
+        }
+
+        metricsDiv.innerHTML = `
+          <b>Conclusion:</b> ${data.final_conclusion.label}<br>
+          <b>System Confidence:</b> ${(data.final_conclusion.confidence * 100).toFixed(2)}%<br>
+          <b>Aggregate Free Energy Loss:</b> ${data.total_free_energy.toFixed(5)}
+        `;
+
+        // Sequential step cascading timeline
+        data.steps.forEach((step, index) => {
+          setTimeout(() => {
+            const rip = mapStepToRipple(step, index, data.steps.length);
+            ripples.push(rip);
+          }, index * 250); // Stagger intervals to mimic step processing
+        });
+
+      } catch (err) {
+        metricsDiv.innerHTML = `<span style="color:red;">Execution Failed: ${err.message}</span>`;
+      }
+    });
+  </script>
+</body>
+</html>
