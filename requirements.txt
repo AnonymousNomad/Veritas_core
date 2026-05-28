@@ -1,10 +1,5 @@
 torch
 sentence-transformers
-<<<<<<< Updated upstream
-torch
-sentence-transformers
-=======
->>>>>>> Stashed changes
 numpy
 transformers
 faiss-cpu
