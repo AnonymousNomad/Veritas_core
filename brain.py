@@ -1,7 +1,6 @@
 import os
 import sys
 import math
-import time
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from src.core.retrieval_engine import LocalRetrievalEngine
@@ -14,16 +13,11 @@ class MockInferenceStep:
         self.metadata = metadata
 
 def process_input(text, max_depth=12):
-    """
-    Sovereign local inference router. Uses the offline vector cache to find matching
-    structural knowledge premises and maps out semantic proof steps.
-    """
     retriever = LocalRetrievalEngine()
     matches = retriever.query(text, top_k=3)
     
     raw_steps = []
     if not matches:
-        # Fallback empty state execution if database is completely blank
         raw_steps.append(MockInferenceStep(
             operation="INITIALIZE",
             text="Autonomous core initialized. No contextual nodes found on disk.",
@@ -35,18 +29,17 @@ def process_input(text, max_depth=12):
             confidence = 1.0
         return BaseNode(), raw_steps
 
-    # Transform matching context nodes into sequential logical premises
     for idx, match in enumerate(matches):
         raw_steps.append(MockInferenceStep(
             operation="SELECT_PREMISE" if idx == 0 else "RESOLVE_RELATION",
             text=match.get('text', ''),
-            confidence=match.get('score', 0.85),
+            confidence=match.get('alignment_score', 0.85),
             metadata={"duration_ms": 40 + (idx * 15), "source": match.get('source_path')}
         ))
 
     class FinalNode:
         label = matches[0].get('text', '')[:120] + "..."
-        confidence = matches[0].get('score', 0.90)
+        confidence = matches[0].get('alignment_score', 0.90)
 
     return FinalNode(), raw_steps
 
@@ -55,11 +48,8 @@ def get_ripple_payload(text, max_depth=12):
     step_payload = []
     
     for i, step in enumerate(raw_steps):
-        # Calculate localized free-energy loss tracking based on inverted confidence differentials
         sim_score = step.confidence
-        sim_score = max(0.001, min(0.999, sim_score)) # Numerical boundary safety lock
-        
-        # Free-energy formulation: lower similarity = higher operational entropy loss
+        sim_score = max(0.001, min(0.999, sim_score)) 
         calculated_loss = -math.log(sim_score) * 0.1
         
         step_payload.append({

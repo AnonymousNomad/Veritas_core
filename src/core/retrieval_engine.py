@@ -1,73 +1,49 @@
 import os
-import sys
 import json
 import torch
-import time
+import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from core.transformer_wrapper import SovereignTransformer
 
 class LocalRetrievalEngine:
-    def __init__(self, model_name="all-MiniLM-L6-v2", storage_dir="storage/knowledge"):
-        from sentence_transformers import SentenceTransformer
-        self.embedder = SentenceTransformer(model_name)
-        self.storage_dir = os.path.join(os.getcwd(), storage_dir)
-        self.manifest_path = os.path.join(self.storage_dir, "chunks_manifest.json")
-        self.vectors_path = os.path.join(self.storage_dir, "vectors_cache.pt")
+    def __init__(self, cache_dir="storage/knowledge"):
+        self.cache_dir = cache_dir
+        self.manifest_path = os.path.join(self.cache_dir, "chunks_manifest.json")
+        self.vector_path = os.path.join(self.cache_dir, "vectors_cache.pt")
+        # Align query encoding with the new generative tier
+        self.embedder = SovereignTransformer(model_name="facebook/opt-125m")
 
     def _load_memory_vault(self):
-        """Loads local tensor arrays and structural manifests from the sovereign database."""
-        if not os.path.exists(self.manifest_path) or not os.path.exists(self.vectors_path):
-            print("[-] Retrieval Warning: Memory vault matrix files do not exist on disk yet.")
+        if not os.path.exists(self.manifest_path) or not os.path.exists(self.vector_path):
             return None, None
-            
-        with open(self.manifest_path, 'r', encoding='utf-8') as f:
+        with open(self.manifest_path, 'r') as f:
             manifest = json.load(f)
-        vectors = torch.load(self.vectors_path, map_location='cpu')
+        vectors = torch.load(self.vector_path, map_location='cpu')
         return manifest, vectors
 
-    def query(self, query_string, top_k=3, temporal_ceiling=None):
-        """Vectorizes user query offline and extracts the highest-affinity contextual matches."""
-        manifest, vectors = self._load_memory_vault()
-        if manifest is None or vectors is None:
+    def query(self, query_text, top_k=3, temporal_ceiling=None):
+        manifest, db_vectors = self._load_memory_vault()
+        if manifest is None or db_vectors is None or len(manifest) == 0:
             return []
 
-        # Step 1: Compute query vector locally
-        query_vector = self.embedder.encode(query_string, convert_to_tensor=True, show_progress_bar=False).cpu()
+        # Generate query vector directly from the LLM hidden state
+        q_vec = self.embedder.encode(query_text).unsqueeze(0)
 
-        # Step 2: Compute exact cosine similarities across the stacked tensor array
-        similarities = torch.nn.functional.cosine_similarity(vectors, query_vector.unsqueeze(0), dim=1)
-
-        # Step 3: Apply Temporal Constraints if active
-        if temporal_ceiling is not None:
-            valid_indices = [
-                idx for idx, chunk in enumerate(manifest)
-                if chunk.get('timestamp', 0) <= temporal_ceiling
-            ]
-        else:
-            valid_indices = list(range(len(manifest)))
-
-        if not valid_indices:
-            return []
-
-        # Isolate scores matching structural boundaries
-        filtered_similarities = similarities[valid_indices]
+        # Pure localized cosine similarity via matrix multiplication
+        similarities = torch.mm(q_vec, db_vectors.transpose(0, 1)).squeeze(0)
         
-        # Step 4: Extract top-K coordinate coordinates
-        actual_k = min(top_k, len(filtered_similarities))
-        top_results = torch.topk(filtered_similarities, actual_k)
-
-        matched_context = []
-        for score, local_idx in zip(top_results.values, top_results.indices):
-            actual_manifest_idx = valid_indices[local_idx.item()]
-            chunk_data = manifest[actual_manifest_idx].copy()
-            chunk_data['score'] = float(score.item())
-            matched_context.append(chunk_data)
-
-        return matched_context
-
-if __name__ == "__main__":
-    # Internal baseline validation harness
-    retriever = LocalRetrievalEngine()
-    print("[*] Local Retrieval Subsystem Initialized. Testing internal matrix queries...")
-    sample_matches = retriever.query("quantum mechanics psychiatry architecture configuration", top_k=2)
-    print(f"[+] Operational Check: Extracted {len(sample_matches)} matches from local database.")
+        top_k = min(top_k, len(manifest))
+        scores, indices = torch.topk(similarities, top_k)
+        
+        results = []
+        for score, idx in zip(scores.tolist(), indices.tolist()):
+            node = manifest[idx]
+            if temporal_ceiling and node.get('timestamp', float('inf')) > temporal_ceiling:
+                continue
+                
+            node_copy = dict(node)
+            node_copy['alignment_score'] = score
+            results.append(node_copy)
+            
+        return results
